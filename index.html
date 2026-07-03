@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Speaking Adventure! ⚽🍕</title>
+    <style>
+        :root {
+            --primary: #2ecc71;
+            --primary-dark: #27ae60;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --yellow: #f1c40f;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f4f8;
+            color: var(--dark);
+            line-height: 1.6;
+            padding-bottom: 60px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .score-badge {
+            background-color: var(--yellow);
+            color: var(--dark);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        section {
+            background-color: var(--white);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            transition: transform 0.3s ease;
+        }
+
+        section:hover {
+            transform: translateY(-2px);
+        }
+
+        h2 {
+            color: var(--secondary);
+            border-bottom: 3px solid var(--light);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h3 {
+            margin: 20px 0 10px 0;
+            color: var(--dark);
+        }
+
+        .instruction {
+            background-color: #e8f4fd;
+            border-left: 5px solid var(--secondary);
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .lang-hint {
+            font-size: 0.85rem;
+            color: #7f8c8d;
+            font-style: italic;
+            display: block;
+            margin-top: 2px;
+        }
+
+        .vocab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 15px;
+        }
+
+        .vocab-card {
+            background-color: var(--light);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            position: relative;
+            border: 1px solid #e0e0e0;
+            transition: background-color 0.3s;
+        }
+
+        .vocab-word {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--dark);
+        }
+
+        .vocab-tr {
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+        }
+
+        .vocab-example {
+            font-size: 0.9rem;
+            background-color: var(--white);
+            padding: 8px;
+            border-radius: 8px;
+            margin-top: 5px;
+            border-left: 3px solid var(--primary);
+            text-align: left;
+        }
+
+        .prompt-card {
+            background: #fff;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+        }
+
+        .starter-phrase {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--secondary);
+            background: #f0f7ff;
+            padding: 2px 6px;
+            border-radius: 6px;
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-top: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .btn-sec {
+            background-color: var(--secondary);
+        }
+
+        .btn-sec:hover {
+            background-color: #2980b9;
+        }
+
+        .model-answer {
+            background-color: #f9f9f9;
+            border: 1px dashed var(--secondary);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .story-box {
+            background-color: #fffaf0;
+            border: 2px dashed var(--yellow);
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .quiz-item {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--light);
+        }
+
+        .options-route {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .option-btn {
+            background-color: var(--white);
+            border: 2px solid var(--light);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: left;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .option-btn:hover {
+            background-color: #f7fafc;
+            border-color: #cbd5e1;
+        }
+
+        .correct {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+            color: #155724;
+        }
+
+        .incorrect {
+            background-color: #f8d7da !important;
+            border-color: #f5c6cb !important;
+            color: #721c24;
+        }
+
+        .pro-box {
+            background: linear-gradient(to right, #ffffff, #f0fdf4);
+            border-left: 5px solid var(--primary);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 0 12px 12px 0;
+            border-top: 1px solid #e2e8f0;
+            border-right: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .sound-target {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .stadium {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), #27ae60;
+            position: relative;
+            border-radius: 15px;
+            padding: 35px 20px;
+            text-align: center;
+            color: white;
+            min-height: 260px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.4);
+            overflow: hidden;
+        }
+
+        /* SVG pitch lines representation layout shortcut */
+        .stadium::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border: 3px solid rgba(255,255,255,0.2);
+            margin: 10px;
+            pointer-events: none;
+            border-radius: 8px;
+        }
+
+        .game-card {
+            background: rgba(255, 255, 255, 0.95);
+            color: var(--dark);
+            padding: 20px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            margin: 0 auto;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            transform: scale(1);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            z-index: 2;
+        }
+
+        .game-card.changing {
+            transform: scale(0.8);
+            opacity: 0;
+        }
+
+        .goal-animation {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            font-size: 4rem;
+            font-weight: 900;
+            color: var(--yellow);
+            text-shadow: 3px 3px 10px rgba(0,0,0,0.8);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .goal-animation.show {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .dialogue-box {
+            background-color: #f8fafc;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .dialogue-line {
+            margin-bottom: 10px;
+        }
+        .dialogue-line:last-child {
+            margin-bottom: 0;
+        }
+
+        .speaker {
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .speaker-a { color: #e67e22; }
+        .speaker-b { color: #9b59b6; }
+
+        .blank-space {
+            border-bottom: 2px dashed var(--dark);
+            display: inline-block;
+            width: 140px;
+            text-align: center;
+            color: var(--secondary);
+            font-weight: bold;
+            background-color: #fff;
+            padding: 0 4px;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+        }
+        
+        .check-item:hover {
+            background-color: #f8fafc;
+        }
+
+        .check-item input {
+            width: 22px;
+            height: 22px;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        .speak-badge {
+            background-color: var(--accent);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 5px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 5px;
+            vertical-align: middle;
+        }
+
+        @media (max-width: 600px) {
+            header h1 { font-size: 1.8rem; }
+            .vocab-grid { grid-template-columns: 1fr; }
+            .stadium { padding: 20px 10px; }
+            .game-card { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>⚽ English Speaking Adventure! 🍕</h1>
+        <p>Hello! Let's practice English together today. Speak out loud and score goals!</p>
+        <div class="score-badge">🏆 Goals Scored: <span id="score-counter">0</span></div>
+    </header>
+
+    <div class="container">
+
+        <!-- WELCOME SECTION -->
+        <section id="welcome">
+            <h2>👋 Welcome, Champion!</h2>
+            <div class="instruction">
+                <strong>Instruction:</strong> Read this message out loud to start your adventure! 
+                <span class="lang-hint">(Macerana başlamak için bu mesajı yüksek sesle oku!)</span>
+            </div>
+            <p style="font-size: 1.25rem; text-align: center; font-weight: 500; color: var(--dark); padding: 10px 0;">
+                "Today is a great day to speak English! I am ready to learn, play, and score goals. Let's go!"
+            </p>
+        </section>
+
+        <!-- VOCABULARY WARM-UP -->
+        <section id="vocabulary">
+            <h2>🔥 Vocabulary Warm-Up</h2>
+            <div class="instruction">
+                <strong>Instruction:</strong> Read the word, look at the Turkish meaning, and say the English example sentence out loud! Click "Done ✓" when you finish saying it.
+                <span class="lang-hint">(Kelimeleri ve örnek cümleleri yüksek sesle oku. Okuduğunda "Done ✓" butonuna bas!)</span>
+            </div>
+            
+            <div class="vocab-grid">
+                <!-- Word 1 -->
+                <div class="vocab-card" id="v1">
+                    <span class="speak-badge">Say it!</span>
+                    <div class="vocab-word">Match</div>
+                    <div class="vocab-tr">Maç</div>
+                    <div class="vocab-example">"I love watching the football <strong>match</strong>."</div>
+                    <button class="btn btn-sec" style="font-size:0.8rem; padding:6px 12px; margin-top:12px;" onclick="markVocab('v1')">Done ✓</button>
+                </div>
+                <!-- Word 2 -->
+                <div class="vocab-card" id="v2">
+                    <span class="speak-badge">Say it!</span>
+                    <div class="vocab-word">Delicious</div>
+                    <div class="vocab-tr">Lezzetli</div>
+                    <div class="vocab-example">"Pizza is very <strong>delicious</strong>."</div>
+                    <button class="btn btn-sec" style="font-size:0.8rem; padding:6px 12px; margin-top:12px;" onclick="markVocab('v2')">Done ✓</button>
+                </div>
+                <!-- Word 3 -->
+                <div class="vocab-card" id="v3">
+                    <span class="speak-badge">Say it!</span>
+                    <div class="vocab-word">Holiday</div>
+                    <div class="vocab-tr">Tatil</div>
+                    <div class="vocab-example">"I go to Antalya on <strong>holiday</strong>."</div>
+                    <button class="btn btn-sec" style="font-size:0.8rem; padding:6px 12px; margin-top:12px;" onclick="markVocab('v3')">Done ✓</button>
+                </div>
+                <!-- Word 4 -->
+                <div class="vocab-card" id="v4">
+                    <span class="speak-badge">Say it!</span>
+                    <div class="vocab-word">Score</div>
+                    <div class="vocab-tr">Gol atmak</div>
+                    <div class="vocab-example">"I want to <strong>score</strong> a goal today."</div>
+                    <button class="btn btn-sec" style="font-size:0.8rem; padding:6px 12px; margin-top:12px;" onclick="markVocab('v4')">Done ✓</button>
+                </div>
+                <!-- Word 5 -->
+                <div class="vocab-card" id="v5">
+                    <span class="speak-badge">Say it!</span>
+                    <div class="vocab-word">Travel</div>
+                    <div class="vocab-tr">Seyahat etmek</div>
+                    <div class="vocab-example">"We <strong>travel</strong> by plane in summer."</div>
+                    <button class="btn btn-sec" style="font-size:0.8rem; padding:6px 12px; margin-top:12px;" onclick="markVocab('v5')">Done ✓</button>
+                </div>
+                <!-- Word 6 -->
+                <div class="vocab-card" id="v6">
+                    <span class="speak-badge">Say it!</span>
+                    <div class="vocab-word">Every day</div>
+                    <div class="vocab-tr">Her gün</div>
+                    <div class="vocab-example">"I play outside <strong>every day</strong>."</div>
+                    <button class="btn btn-sec" style="font-size:0.8rem; padding:6px 12px; margin-top:12px;" onclick="markVocab('v6')">Done ✓</button>
+                </div>
+                <!-- Word 7 -->
+                <div class="vocab-card" id="v7">
+                    <span class="speak-badge">Say it!</span>
+                    <div class="vocab-word">Team</div>
+                    <div class="vocab-tr">Takım</div>
+                    <div class="vocab-example">"My football <strong>team</strong> is the best."</div>
+                    <button class="btn btn-sec" style="font-size:0.8rem; padding:6px 12px; margin-top:12px;" onclick="markVocab('v7')">Done ✓</button>
+                </div>
+                <!-- Word 8 -->
+                <div class="vocab-card" id="v8">
+                    <span class="speak-badge">Say it!</span>
+                    <div class="vocab-word">Breakfast</div>
+                    <div class="vocab-tr">Kahvaltı</div>
+                    <div class="vocab-example">"I eat eggs for <strong>breakfast</strong>."</div>
+                    <button class="btn btn-sec" style="font-size:0.8rem; padding:6px 12px; margin-top:12px;" onclick="markVocab('v8')">Done ✓</button>
+                </div>
+                <!-- Word 9 -->
+                <div class="vocab-card" id="v9">
+                    <span class="speak-badge">Say it!</span>
+                    <div class="vocab-word">Beach</div>
+                    <div class="vocab-tr">Plaj / Kumsal</div>
+                    <div class="vocab-example">"I run on the sandy <strong>beach</strong>."</div>
+                    <button class="btn btn-sec" style="font-size:0.8rem; padding:6px 12px; margin-top:12px;" onclick="markVocab('v9')">Done ✓</button>
+                </div>
+                <!-- Word 10 -->
+                <div class="vocab-card" id="v10">
+                    <span class="speak-badge">Say it!</span>
+                    <div class="vocab-word">Try</div>
+                    <div class="vocab-tr">Denemek</div>
+                    <div class="vocab-example">"I want to <strong>try</strong> local foods."</div>
+                    <button class="btn btn-sec" style="font-size:0.8rem; padding:6px 12px; margin-top:12px;" onclick="markVocab('v10')">Done ✓</button>
+                </div>
+                <!-- Word 11 -->
+                <div class="vocab-card" id="v11">
+                    <span class="speak-badge">Say it!</span>
+                    <div class="vocab-word">Usually</div>
+                    <div class="vocab-tr">Genellikle</div>
+                    <div class="vocab-example">"I <strong>usually</strong> sleep at ten o'clock."</div>
+                    <button class="btn btn-sec" style="font-size:0.8rem; padding:6px 12px; margin-top:12px;" onclick="markVocab('v11')">Done ✓</button>
+                </div>
+                <!-- Word 12 -->
+                <div class="vocab-card" id="v12">
+                    <span class="speak-badge">Say it!</span>
+                    <div class="vocab-word">Stadium</div>
+                    <div class="vocab-tr">Stadyum</div>
+                    <div class="vocab-example">"The match is inside a huge <strong>stadium</strong>."</div>
+                    <button class="btn btn-sec" style="font-size:0.8rem; padding:6px 12px; margin-top:12px;" onclick="markVocab('v12')">Done ✓</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SPEAKING PRACTICE -->
+        <section id="speaking-prompts">
+            <h2>💬 Speaking Boosters</h2>
+            <div class="instruction">
+                <strong>Instruction:</strong> Finish the sentences out loud using your own true ideas! If you get stuck, click the hint button for an example.
+                <span class="lang-hint">(Cümleleri kendi fikirlerinle yüksek sesle tamamla. Takılırsan ipucu butonuna tıkla.)</span>
+            </div>
+
+            <!-- Prompt 1 -->
+            <div class="prompt-card">
+                <p style="font-size: 1.1rem; margin-bottom: 8px;"><span class="speak-badge">Speak</span> 1. <span class="starter-phrase">I like...</span></p>
+                <button class="btn btn-sec" style="font-size:0.8rem; padding:4px 8px; margin-top: 0;" onclick="toggleModel('m1')">💡 Need a hint?</button>
+                <div id="m1" class="model-answer">"I like playing football with my friends after school."</div>
+            </div>
+            <!-- Prompt 2 -->
+            <div class="prompt-card">
+                <p style="font-size: 1.1rem; margin-bottom: 8px;"><span class="speak-badge">Speak</span> 2. <span class="starter-phrase">I want to...</span></p>
+                <button class="btn btn-sec" style="font-size:0.8rem; padding:4px 8px; margin-top: 0;" onclick="toggleModel('m2')">💡 Need a hint?</button>
+                <div id="m2" class="model-answer">"I want to travel to London next summer."</div>
+            </div>
+            <!-- Prompt 3 -->
+            <div class="prompt-card">
+                <p style="font-size: 1.1rem; margin-bottom: 8px;"><span class="speak-badge">Speak</span> 3. <span class="starter-phrase">My favorite food is...</span></p>
+                <button class="btn btn-sec" style="font-size:0.8rem; padding:4px 8px; margin-top: 0;" onclick="toggleModel('m3')">💡 Need a hint?</button>
+                <div id="m3" class="model-answer">"My favorite food is köfte and chips. It is delicious!"</div>
+            </div>
+            <!-- Prompt 4 -->
+            <div class="prompt-card">
+                <p style="font-size: 1.1rem; margin-bottom: 8px;"><span class="speak-badge">Speak</span> 4. <span class="starter-phrase">I usually...</span></p>
+                <button class="btn btn-sec" style="font-size:0.8rem; padding:4px 8px; margin-top: 0;" onclick="toggleModel('m4')">💡 Need a hint?</button>
+                <div id="m4" class="model-answer">"I usually wake up early and eat a good breakfast."</div>
+            </div>
+            <!-- Prompt 5 -->
+            <div class="prompt-card">
+                <p style="font-size: 1.1rem; margin-bottom: 8px;"><span class="speak-badge">Speak</span> 5. <span class="starter-phrase">On holiday, I...</span></p>
+                <button class="btn btn-sec" style="font-size:0.8rem; padding:4px 8px; margin-top: 0;" onclick="toggleModel('m5')">💡 Need a hint?</button>
+                <div id="m5" class="model-answer">"On holiday, I swim in the warm sea and try new foods."</div>
+            </div>
+        </section>
+
+        <!-- MINI READING TEXT -->
+        <section id="reading">
+            <h2>📖 Leo's Great Summer Holiday</h2>
+            <div class="instruction">
+                <strong>Instruction:</strong> Read Leo's story out loud smoothly. Pay extra attention to the bold words!
+                <span class="lang-hint">(Hikayeyi yüksek sesle akıcı bir şekilde oku. Kalın yazılmış kelimelere dikkat et!)</span>
+            </div>
+            <div class="story-box">
+                Hi! My name is Leo, and I am eleven years old. Every summer, I <strong>travel</strong> to a beautiful seaside city on <strong>holiday</strong> with my family. We stay in a small hotel near the <strong>beach</strong>. In the morning, I eat a big <strong>breakfast</strong> with eggs, cheese, and fresh tomatoes. 
+                <br><br>
+                In the afternoon, I go to the local park because I love sports. I meet new friends there and we play an exciting football <strong>match</strong>. Yesterday, our <strong>team</strong> played very well, and I managed to <strong>score</strong> two spectacular goals! It was amazing! 
+                <br><br>
+                In the evening, we go to a cozy restaurant. I love to <strong>try</strong> new things. Yesterday, I ate a special pasta dish. It was very <strong>delicious</strong>! After dinner, I <strong>usually</strong> walk by the sea with my parents and look at the bright stars. Daily life here is very fun!
+            </div>
+        </section>
+
+        <!-- READING COMPREHENSION -->
+        <section id="comprehension">
+            <h2>🧩 Reading Quiz & Speaking Questions</h2>
+            <div class="instruction">
+                <strong>Instruction:</strong> Click the correct answer options to verify your comprehension, then answer the final questions out loud!
+                <span class="lang-hint">(Test sorularını işaretle ve ardından gelen konuşma sorularını sesli cevapla!)</span>
+            </div>
+
+            <!-- Quiz 1 -->
+            <div class="quiz-item" id="qrow1">
+                <p><strong>1. How old is Leo?</strong></p>
+                <div class="options-route">
+                    <button class="option-btn" onclick="checkQuiz(this, false, 1)">A) 9 years old</button>
+                    <button class="option-btn" onclick="checkQuiz(this, true, 1)">B) 11 years old</button>
+                    <button class="option-btn" onclick="checkQuiz(this, false, 1)">C) 15 years old</button>
+                </div>
+            </div>
+
+            <!-- Quiz 2 -->
+            <div class="quiz-item" id="qrow2">
+                <p><strong>2. What does Leo do in the afternoon?</strong></p>
+                <div class="options-route">
+                    <button class="option-btn" onclick="checkQuiz(this, true, 2)">A) He plays a football match</button>
+                    <button class="option-btn" onclick="checkQuiz(this, false, 2)">B) He sleeps inside the hotel</button>
+                    <button class="option-btn" onclick="checkQuiz(this, false, 2)">C) He buys new video games</button>
+                </div>
+            </div>
+
+            <!-- Quiz 3 -->
+            <div class="quiz-item" id="qrow3">
+                <p><strong>3. What did Leo eat for dinner yesterday?</strong></p>
+                <div class="options-route">
+                    <button class="option-btn" onclick="checkQuiz(this, false, 3)">A) Pizza and chips</button>
+                    <button class="option-btn" onclick="checkQuiz(this, false, 3)">B) Grilled fish</button>
+                    <button class="option-btn" onclick="checkQuiz(this, true, 3)">C) A special pasta dish</button>
+                </div>
+            </div>
+
+            <!-- Speaking Questions from Reading -->
+            <h3 style="margin-top: 25px;">🗣️ Answer out loud with full sentences:</h3>
+            
+            <div class="prompt-card">
+                <p style="margin-bottom: 6px;"><span class="speak-badge">Speak</span> <strong>Q1: Where does Leo stay on holiday?</strong></p>
+                <button class="btn btn-sec" style="font-size:0.8rem; padding:4px 8px; margin-top:0;" onclick="toggleModel('rq1')">💡 Answer Hint</button>
+                <div id="rq1" class="model-answer">"He stays in a small hotel near the beach."</div>
+            </div>
+
+            <div class="prompt-card">
+                <p style="margin-bottom: 6px;"><span class="speak-badge">Speak</span> <strong>Q2: How many goals did Leo score yesterday?</strong></p>
+                <button class="btn btn-sec" style="font-size:0.8rem; padding:4px 8px; margin-top:0;" onclick="toggleModel('rq2')">💡 Answer Hint</button>
+                <div id="rq2" class="model-answer">"He scored two goals yesterday!"</div>
+            </div>
+
+            <div class="prompt-card">
+                <p style="margin-bottom: 6px;"><span class="speak-badge">Speak</span> <strong>Q3: What does Leo do after dinner?</strong></p>
+                <button class="btn btn-sec" style="font-size:0.8rem; padding:4px 8px; margin-top:0;" onclick="toggleModel('rq3')">💡 Answer Hint</button>
+                <div id="rq3" class="model-answer">"He usually walks by the sea and looks at the stars."</div>
+            </div>
+        </section>
+
+        <!-- PRONUNCIATION PRACTICE -->
+        <section id="pronunciation">
+            <h2>🗣️ Sound Mastery Studio</h2>
+            <div class="instruction">
+                <strong>Instruction:</strong> Read the helpful mouth tips and repeat these words 3 times out loud. Focus on your mouth shapes!
+                <span class="lang-hint">(İpuçlarını oku ve kelimeleri 3 kez sesli tekrarla. Ağız şekline odaklan!)</span>
+            </div>
+
+            <div class="pro-box">
+                <p><span class="sound-target">The "TH" Sound:</span> Put your tongue between your front teeth and gently blow air out.</p>
+                <p style="font-size: 1.2rem; margin-top: 8px; font-weight: bold; color: var(--dark);">🗣️ Thanks • Three • Thursday</p>
+            </div>
+
+            <div class="pro-box">
+                <p><span class="sound-target">The "W" Sound:</span> Make your lips round like a small tight circle. Do not let your teeth touch your lip!</p>
+                <p style="font-size: 1.2rem; margin-top: 8px; font-weight: bold; color: var(--dark);">🗣️ Water • Watch • Weekends</p>
+            </div>
+
+            <div class="pro-box">
+                <p><span class="sound-target">Final Sounds (-d and -t):</span> Make sure you don't forget the last sound! Pronounce the endings clearly.</p>
+                <p style="font-size: 1.2rem; margin-top: 8px; font-weight: bold; color: var(--dark);">🗣️ Foo<u>d</u> • Playe<u>d</u> • Like<u>d</u></p>
+            </div>
+        </section>
+
+        <!-- FOOTBALL CHALLENGE GAME -->
+        <section id="football-game">
+            <h2>⚽ Penalty Shootout Speaking Game</h2>
+            <div class="instruction">
+                <strong>Instruction:</strong> Read the challenge card question, answer it OUT LOUD using a full English sentence, then click "SHOOT!" to score!
+                <span class="lang-hint">(Soruyu oku, sesli olarak tam bir cümleyle cevap ver ve gol atmak için "SHOOT!" butonuna bas!)</span>
+            </div>
+
+            <div class="stadium">
+                <div class="goal-animation" id="goal-text">GOAL!! 🥅⚽</div>
+                <div class="game-card" id="game-card">
+                    <h4 style="color: var(--accent); margin-bottom: 5px;">Challenge Card <span id="card-number">1</span>/6</h4>
+                    <p id="card-question" style="font-size: 1.2rem; font-weight: bold; margin-bottom: 15px;">"Who is your favorite football player and why?"</p>
+                    <div id="card-starter" style="font-size:0.85rem; color:#666; margin-bottom:15px; font-style: italic;">Sentence starter: "My favorite player is... because..."</div>
+                    <button class="btn" style="background-color: var(--accent); margin-top:0;" onclick="shootGoal()">⚽ SHOOT!</button>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 15px;">
+                <button class="btn btn-sec" onclick="nextChallenge()">Next Challenge Card ➡️</button>
+            </div>
+        </section>
+
+        <!-- DAILY LIFE ROLEPLAY -->
+        <section id="roleplay">
+            <h2>🎭 Action Roleplay</h2>
+            <div class="instruction">
+                <strong>Instruction:</strong> Read the full conversation with your eyes first. Then practice by reading Role B out loud and picking a word for the blank spaces!
+                <span class="lang-hint">(Önce diyaloğu gözünle oku. Sonra B rolünü boşlukları seçerek sesli canlandır!)</span>
+            </div>
+
+            <h3>🍔 Roleplay 1: Ordering Food on Holiday</h3>
+            <div class="dialogue-box">
+                <div class="dialogue-line"><span class="speaker speaker-a">Waiter:</span> Hello! What would you like to eat today?</div>
+                <div class="dialogue-line"><span class="speaker speaker-b">You (Speak!):</span> Hi! I want a big <span class="blank-space">burger / pizza</span>, please.</div>
+                <div class="dialogue-line"><span class="speaker speaker-a">Waiter:</span> Great choice! Anything to drink with that?</div>
+                <div class="dialogue-line"><span class="speaker speaker-b">You (Speak!):</span> Yes, can I have some cold <span class="blank-space">water / lemonade</span>?</div>
+                <div class="dialogue-line"><span class="speaker speaker-a">Waiter:</span> Perfect. Coming right up!</div>
+            </div>
+
+            <h3>🤝 Roleplay 2: Talking Football with a New Friend</h3>
+            <div class="dialogue-box">
+                <div class="dialogue-line"><span class="speaker speaker-a">Sam:</span> Hey! Nice goal! You are very good at football.</div>
+                <div class="dialogue-line"><span class="speaker speaker-b">You (Speak!):</span> Thanks! I practice and play football <span class="blank-space">every day / often</span>.</div>
+                <div class="dialogue-line"><span class="speaker speaker-a">Sam:</span> Awesome. Do you want to play in our team match tomorrow afternoon?</div>
+                <div class="dialogue-line"><span class="speaker speaker-b">You (Speak!):</span> Yes, <span class="blank-space">I want to / I love to</span> play with your team!</div>
+            </div>
+        </section>
+
+        <!-- FINAL REVIEW -->
+        <section id="review">
+            <h2>🏆 Victory Checklist</h2>
+            <div class="instruction">
+                <strong>Instruction:</strong> Check the boxes for each activity you tried today to see your final performance rank!
+                <span class="lang-hint">(Bugün tamamladığın adımların kutularını işaretle ve sonucunu gör!)</span>
+            </div>
+
+            <div class="check-item">
+                <input type="checkbox" id="c1" onchange="toggleCheck()">
+                <label for="c1">I learned and pronounced new words out loud. 🍕</label>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" id="c2" onchange="toggleCheck()">
+                <label for="c2">I finished the speaking booster starter phrases. 💬</label>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" id="c3" onchange="toggleCheck()">
+                <label for="c3">I read the summer story about Leo clearly out loud. 📖</label>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" id="c4" onchange="toggleCheck()">
+                <label for="c4">I practiced the tricky English sounds (th, w, end sounds). 🗣️</label>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" id="c5" onchange="toggleCheck()">
+                <label for="c5">I completed the Penalty Shootout game cards. ⚽</label>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" id="c6" onchange="toggleCheck()">
+                <label for="c6">I tried my absolute best and spoke complete English sentences! 🔥</label>
+            </div>
+
+            <div id="final-message" style="margin-top: 30px; text-align: center; display: none; background-color: #f0fdf4; padding: 20px; border-radius: 12px; border: 2px solid var(--primary);">
+                <h3 style="color: var(--primary-dark); font-size: 1.6rem; margin-bottom: 10px; margin-top: 0;">🌟 Match Winner & Language Superstar! 🌟</h3>
+                <p style="font-size: 1.1rem;">You did an incredible job speaking English today! Your oral confidence is growing with every single word. Keep practicing out loud, you are doing amazing! Harika iş çıkardın! 🎉</p>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        let score = 0;
+        let currentCard = 0;
+
+        const challenges = [
+            {
+                q: "Who is your favorite football player and why?",
+                hint: "My favorite player is... because..."
+            },
+            {
+                q: "What do you usually eat for breakfast on the weekend?",
+                hint: "On weekends, I usually eat..."
+            },
+            {
+                q: "Imagine your dream holiday. Where do you want to travel?",
+                hint: "I want to travel to... on my dream holiday."
+            },
+            {
+                q: "What is your favorite team sport and where do you play it?",
+                hint: "My favorite team sport is... and I play it at..."
+            },
+            {
+                q: "Describe a super delicious meal you love to eat.",
+                hint: "I love... It is super delicious because..."
+            },
+            {
+                q: "What fun activity do you do every day during your summer break?",
+                hint: "Every day during summer, I enjoy..."
+            }
+        ];
+
+        function updateScore(points) {
+            score += points;
+            document.getElementById('score-counter').innerText = score;
+        }
+
+        function markVocab(id) {
+            const card = document.getElementById(id);
+            if (!card.classList.contains('done')) {
+                card.style.opacity = '0.75';
+                card.style.backgroundColor = '#e8fdf0';
+                card.style.borderColor = 'var(--primary)';
+                card.classList.add('done');
+                updateScore(1);
+            }
+        }
+
+        function toggleModel(id) {
+            const elem = document.getElementById(id);
+            if(elem.style.display === 'block') {
+                elem.style.display = 'none';
+            } else {
+                elem.style.display = 'block';
+            }
+        }
+
+        function checkQuiz(button, isCorrect, questionNum) {
+            const row = document.getElementById('qrow' + questionNum);
+            const buttons = row.getElementsByClassName('option-btn');
+            
+            for(let btn of buttons) {
+                btn.disabled = true;
+            }
+
+            if (isCorrect) {
+                button.classList.add('correct');
+                updateScore(2);
+            } else {
+                button.classList.add('incorrect');
+                for(let btn of buttons) {
+                    if(questionNum === 1 && btn.innerText.includes('B)')) btn.classList.add('correct');
+                    if(questionNum === 2 && btn.innerText.includes('A)')) btn.classList.add('correct');
+                    if(questionNum === 3 && btn.innerText.includes('C)')) btn.classList.add('correct');
+                }
+            }
+        }
+
+        function shootGoal() {
+            const goalText = document.getElementById('goal-text');
+            goalText.classList.add('show');
+            updateScore(3);
+            
+            setTimeout(() => {
+                goalText.classList.remove('show');
+            }, 1200);
+        }
+
+        function nextChallenge() {
+            currentCard = (currentCard + 1) % challenges.length;
+            const cardElement = document.getElementById('game-card');
+            
+            cardElement.classList.add('changing');
+            
+            setTimeout(() => {
+                document.getElementById('card-number').innerText = currentCard + 1;
+                document.getElementById('card-question').innerText = `"${challenges[currentCard].q}"`;
+                document.getElementById('card-starter').innerText = `Sentence starter: "${challenges[currentCard].hint}"`;
+                cardElement.classList.remove('changing');
+            }, 250);
+        }
+
+        function toggleCheck() {
+            const totalCheckboxes = document.querySelectorAll('#review input[type="checkbox"]').length;
+            const checkedBoxes = document.querySelectorAll('#review input[type="checkbox"]:checked').length;
+            const finalMsg = document.getElementById('final-message');
+
+            if(checkedBoxes === totalCheckboxes) {
+                finalMsg.style.display = 'block';
+                finalMsg.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                finalMsg.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
